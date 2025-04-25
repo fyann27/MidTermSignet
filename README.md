@@ -11,6 +11,7 @@
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 
   <style>
     .judul {
@@ -109,46 +110,39 @@
         <div onclick="showContent('pj')" class="kbk-link">
           <i class="bi bi-eye kbk-icon"></i> KBK Penginderaan Jauh
         </div>
-        <div onclick="showContent('petaInteractive')" class="kbk-link">
-          <i class="bi bi-globe kbk-icon"></i> Peta Interaktif
-        </div>
       </div>
 
       <!-- Konten Utama -->
-      <div class="col-md-6 content" id="mainContent">
-        <!-- Konten default HOME -->
+      <div class="col-md-9 content" id="mainContent">
+        <!-- Default HOME -->
         <h5>Selamat datang di Website Teknik Geomatika</h5>
-        <p>Salah satu mata kuliah yang termasuk dalam KBK Sistem Informasi Geografis (SIG) adalah SIG Berbasis Internet. Pada mata kuliah ini mahasiswa mempelajari pengaplikasian SIG dengan berbasis pada platform internet. Mahasiswa mempelajari konsep kerja internet, proses <em>request</em> dan <em>respond</em> oleh <em>user</em> dan <em>client</em>, serta pembangunan website itu sendiri.</p>
-        <p>Memahami HTML dan CSS merupakan langkah selanjutnya bagi mahasiswa yang membuat halaman website. Kali ini, salah satu tugas adalah membangun tampilan halaman web sederhana ini. Selanjutnya halaman sederhana ini dikembangkan kembali dengan mengaplikasikan penggunaan Bootstrap.</p>
-      </div>
-
-      <!-- Gambar -->
-      <div class="col-md-3 p-3">
-        <img src="https://th.bing.com/th/id/R.d03d8d2ed3d5375ffe9e38134daa5789?rik=J8j%2fYbZicPoxRw&riu=http%3a%2f%2fwww.ezega.com%2fuserfiles%2fOnline-world.jpg&ehk=I3wVFR8tYKA8Ld9p9qr6qZzDHWt74wfiDe8fNi%2f7zdI%3d&risl=&pid=ImgRaw&r=0" 
-             class="img-fluid rounded shadow-sm" alt="Representasi Dunia Online">
+        <p>Salah satu mata kuliah yang termasuk dalam KBK Sistem Informasi Geografis (SIG) adalah SIG Berbasis Internet. Pada mata kuliah ini mahasiswa mempelajari pengaplikasian SIG dengan berbasis pada platform internet.</p>
+        <p>Memahami HTML dan CSS merupakan langkah awal, lalu Bootstrap digunakan untuk membangun tampilan yang lebih menarik dan responsif.</p>
       </div>
     </div>
 
     <!-- Footer -->
     <div class="row">
       <div class="col-12 footer">
-        Copyright @Achmad Sofyan_NIM
+        Copyright @Achmad Sofyan_117220058
       </div>
     </div>
   </div>
 
-  <!-- JavaScript untuk dinamis konten -->
+  <!-- JS Dependencies -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
   <script>
+    let map, control;
+
     function showContent(section) {
       const content = {
         home: `
           <h5>Selamat datang di Website Teknik Geomatika</h5>
-          <p>Salah satu mata kuliah yang termasuk dalam KBK Sistem Informasi Geografis (SIG) adalah SIG Berbasis Internet. Pada mata kuliah ini mahasiswa mempelajari pengaplikasian SIG dengan berbasis pada platform internet. Mahasiswa mempelajari konsep kerja internet, proses <em>request</em> dan <em>respond</em> oleh <em>user</em> dan <em>client</em>, serta pembangunan website itu sendiri.</p>
-          <p>Memahami HTML dan CSS merupakan langkah selanjutnya bagi mahasiswa yang membuat halaman website. Kali ini, salah satu tugas adalah membangun tampilan halaman web sederhana ini. Selanjutnya halaman sederhana ini dikembangkan kembali dengan mengaplikasikan penggunaan Bootstrap.</p>
+          <p>Salah satu mata kuliah yang termasuk dalam KBK Sistem Informasi Geografis (SIG) adalah SIG Berbasis Internet. Pada mata kuliah ini mahasiswa mempelajari pengaplikasian SIG dengan berbasis pada platform internet.</p>
+          <p>Memahami HTML dan CSS merupakan langkah awal, lalu Bootstrap digunakan untuk membangun tampilan yang lebih menarik dan responsif.</p>6
         `,
         terestris: `
           <h5>KBK Terestris</h5>
@@ -168,51 +162,88 @@
         `,
         peta: `
           <h5>Jenis dan Contoh Peta</h5>
-          <p>Berikut adalah contoh dua jenis peta:</p>
           <ul>
-            <li><strong>Peta Statis:</strong> Peta cetak atau gambar yang tidak berubah, seperti yang digunakan dalam buku atau laporan.</li>
-            <li><strong>Peta Dinamis:</strong> Peta yang dapat berubah atau memberikan animasi visual seperti peta GIF atau video singkat.</li>
+            <p>Peta adalah gambaran permukaan bumi yang dibuat pada bidang datar dan diperkecil dengan skala tertentu, yang menunjukkan lokasi, bentuk, dan fenomena geografis yang ada di suatu wilayah. Peta digunakan untuk menyajikan informasi mengenai letak suatu tempat, kondisi fisik wilayah, atau data tematik tertentu, seperti kepadatan penduduk, iklim, atau penggunaan lahan.</p>
+            <li><strong>Peta Statis:</strong> Peta yang bersifat tetap dan tidak berubah. Informasi yang ditampilkan pada peta ini sudah bersifat final dan tidak dapat diubah atau diperbarui oleh pengguna secara langsung. Contoh peta statis adalah peta cetak yang biasa ditemukan dalam buku atlas atau peta topografi yang dicetak.</li>
+            <li><strong>Peta Dinamis:</strong> Peta yang bersifat interaktif dan dapat berubah sesuai dengan masukan atau data yang diperbarui secara real-time. Pengguna dapat berinteraksi dengan peta ini, misalnya dengan memperbesar, memperkecil, memilih lapisan informasi tertentu, atau melihat data yang terus diperbarui. Contoh dari peta dinamis adalah peta online seperti Google Maps atau peta cuaca yang selalu menampilkan informasi terkini.
+
+</li>
           </ul>
-          <div class="mb-3">
-            <h6>Peta Statis:</h6>
-            <img src="peta-statis.jpg" alt="Peta Statis" class="img-fluid rounded border">
-          </div>
-          <div>
-            <h6>Peta Dinamis:</h6>
-            <img src="peta-dinamis.gif" alt="Peta Dinamis" class="img-fluid rounded border">
-          </div>
+          <img src="https://geohepi.wordpress.com/wp-content/uploads/2020/10/dfghsfg.jpg" class="img-fluid rounded mb-3" alt="Peta Statis">
+          <img src="https://bloggeografi.id/wp-content/uploads/2010/06/penduduk_output.jpg" class="img-fluid rounded" alt="Peta Dinamis">
         `,
         petaInteractive: `
           <h5>Peta Interaktif</h5>
-          <p>Berikut adalah contoh peta interaktif sederhana menggunakan Leaflet.js.</p>
+          <p>Masukkan lokasi berangkat dan tujuan, lalu klik "Tampilkan Rute"</p>
+          <div class="mb-3 row">
+            <div class="col-md-5">
+              <input type="text" id="startLocation" class="form-control" placeholder="Lokasi Awal (misal: Tugu Jogja)">
+            </div>
+            <div class="col-md-5">
+              <input type="text" id="endLocation" class="form-control" placeholder="Lokasi Tujuan (misal: UPN Yogyakarta)">
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-warning w-100" onclick="showCustomRoute()">Tampilkan Rute</button>
+            </div>
+          </div>
           <div id="map" style="height: 400px; border: 1px solid #ccc;"></div>
         `
       };
+
       document.getElementById('mainContent').innerHTML = content[section] || '<p>Konten tidak ditemukan.</p>';
 
       if (section === 'petaInteractive') {
-        setTimeout(initLeafletMap, 100);
+        setTimeout(initMap, 100);
       }
     }
 
-    function initLeafletMap() {
-      if (!document.getElementById('map')) return;
-
-      if (window.leafletMap) {
-        window.leafletMap.remove();
+    function initMap() {
+      if (map) {
+        map.remove();
       }
-
-      window.leafletMap = L.map('map').setView([-7.797068, 110.370529], 13);
+      map = L.map('map').setView([-7.797068, 110.370529], 13);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
-      }).addTo(window.leafletMap);
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+    }
 
-      L.marker([-7.797068, 110.370529]).addTo(window.leafletMap)
-        .bindPopup('Lokasi UPN “Veteran” Yogyakarta')
-        .openPopup();
+    async function geocodeLocation(query) {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data && data[0]) {
+        return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+      } else {
+        alert("Lokasi tidak ditemukan: " + query);
+        return null;
+      }
+    }
+
+    async function showCustomRoute() {
+      const startText = document.getElementById('startLocation').value;
+      const endText = document.getElementById('endLocation').value;
+
+      if (!startText || !endText) {
+        alert('Harap isi kedua lokasi.');
+        return;
+      }
+
+      const startCoords = await geocodeLocation(startText);
+      const endCoords = await geocodeLocation(endText);
+
+      if (!startCoords || !endCoords) return;
+
+      if (control) {
+        map.removeControl(control);
+      }
+
+      control = L.Routing.control({
+        waypoints: [L.latLng(...startCoords), L.latLng(...endCoords)],
+        routeWhileDragging: true
+      }).addTo(map);
     }
   </script>
 </body>
 </html>
+
